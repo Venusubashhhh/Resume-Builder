@@ -7,6 +7,7 @@ import {
   Education,
   Experience,
   Interest,
+  Strengths,
   Language,
   Profile,
   Project,
@@ -68,8 +69,10 @@ export const LeftSidebar = () => {
           <SectionIcon id="awards" onClick={() => scrollIntoView("#awards")} />
           <SectionIcon id="certifications" onClick={() => scrollIntoView("#certifications")} />
           <SectionIcon id="interests" onClick={() => scrollIntoView("#interests")} />
+          <SectionIcon id="strengths" onClick={() => scrollIntoView("#strengths")} />
           <SectionIcon id="projects" onClick={() => scrollIntoView("#projects")} />
           <SectionIcon id="publications" onClick={() => scrollIntoView("#publications")} />
+
           <SectionIcon id="volunteer" onClick={() => scrollIntoView("#volunteer")} />
           <SectionIcon id="references" onClick={() => scrollIntoView("#references")} />
 
@@ -146,6 +149,14 @@ export const LeftSidebar = () => {
           <Separator />
           <SectionBase<Interest>
             id="interests"
+            title={(item) => item.name}
+            description={(item) => {
+              if (item.keywords.length > 0) return `${item.keywords.length} keywords`;
+            }}
+          />
+          <Separator />
+          <SectionBase<Strengths>
+            id="strengths"
             title={(item) => item.name}
             description={(item) => {
               if (item.keywords.length > 0) return `${item.keywords.length} keywords`;

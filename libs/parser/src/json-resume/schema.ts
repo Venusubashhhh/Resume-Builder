@@ -104,6 +104,11 @@ const interestsSchema = z.object({
   keywords: z.array(z.string()).optional(),
 });
 
+const strengthsSchema = z.object({
+  name: z.string().optional(),
+  keywords: z.array(z.string()).optional(),
+});
+
 const referencesSchema = z.object({
   name: z.string().optional(),
   reference: z.string().optional(),
@@ -120,6 +125,7 @@ export const jsonResumeSchema = z.object({
   skills: z.array(skillsSchema).optional(),
   languages: z.array(languagesSchema).optional(),
   interests: z.array(interestsSchema).optional(),
+  strengths: z.array(strengthsSchema).optional(),
   references: z.array(referencesSchema).optional(),
 });
 

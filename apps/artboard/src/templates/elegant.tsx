@@ -28,47 +28,68 @@ import { TemplateProps } from "../types/template";
 
 const Header = () => {
   const basics = useArtboardStore((state) => state.resume.basics);
+  const borderRadius = useArtboardStore((state) => state.resume.basics.picture.borderRadius);
 
   return (
-    <div className="flex items-center space-x-4">
-      <Picture />
+    <div
+      className="summary group  px-6 pb-7 pt-6 text-background text-black"
+      style={{ borderRadius: `calc(${borderRadius}px - 2px)` }}
+    >
+      <div className="col-span-2 space-y-2.5">
+        <div>
+        <h2 className="text-6xl font-bold" style={{ borderBottomWidth: "16px", borderBottomColor: "#FFD700",textAlign:"center" }}>{basics.name}</h2>
 
-      <div className="space-y-0.5">
-        <div className="text-2xl font-bold">{basics.name}</div>
-        <div className="text-base">{basics.headline}</div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
+          <p className="text-center">{basics.headline}</p>
+        </div>
+
+        <hr className="border-background opacity-50" />
+
+        <div className="text-sm" style={{marginTop:'-13px'}}>
           {basics.location && (
-            <div className="flex items-center gap-x-1.5 border-r pr-2 last:border-r-0 last:pr-0">
-              <i className="ph ph-bold ph-map-pin text-primary" />
-              <div>{basics.location}</div>
-            </div>
+            <>
+              <div className="text-center">
+            
+                <div>{basics.location}</div>
+              </div>
+              <div className="size-1 rounded-full bg-background last:hidden" />
+            </>
           )}
           {basics.phone && (
-            <div className="flex items-center gap-x-1.5 border-r pr-2 last:border-r-0 last:pr-0">
-              <i className="ph ph-bold ph-phone text-primary" />
-              <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
-                {basics.phone}
-              </a>
-            </div>
+            <>
+              <div className="text-center">
+            
+                <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
+                  {basics.phone}
+                </a>
+              </div>
+              <div className="size-1 rounded-full bg-background last:hidden" />
+            </>
           )}
           {basics.email && (
-            <div className="flex items-center gap-x-1.5 border-r pr-2 last:border-r-0 last:pr-0">
-              <i className="ph ph-bold ph-at text-primary" />
-              <a href={`mailto:${basics.email}`} target="_blank" rel="noreferrer">
-                {basics.email}
-              </a>
-            </div>
+            <>
+              <div className="text-center">
+             
+                <a href={`mailto:${basics.email}`} target="_blank" rel="noreferrer">
+                  {basics.email}
+                </a>
+              </div>
+              <div className="size-1 rounded-full bg-background last:hidden" />
+            </>
           )}
-          <Link url={basics.url} />
+          {isUrl(basics.url.href) && (
+            <>
+              <Link url={basics.url} />
+              <div className="size-1 rounded-full bg-background last:hidden" />
+            </>
+          )}
           {basics.customFields.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center gap-x-1.5 border-r pr-2 last:border-r-0 last:pr-0"
-            >
-              <i className={cn(`ph ph-bold ph-${item.icon}`, "text-primary")} />
-              <span>{[item.name, item.value].filter(Boolean).join(": ")}</span>
-            </div>
+            <Fragment key={item.id}>
+              <div className="text-center">
+                <span>{[item.name, item.value].filter(Boolean).join(": ")}</span>
+              </div>
+              <div className="size-1 rounded-full bg-background last:hidden" />
+            </Fragment>
           ))}
         </div>
       </div>
@@ -82,8 +103,8 @@ const Summary = () => {
   if (!section.visible || isEmptyString(section.content)) return null;
 
   return (
-    <section id={section.id}>
-      <h4 className="mb-2 border-b pb-0.5 text-sm font-bold">{section.name}</h4>
+    <section id={section.id} style={{margin:'20px'}}>
+      <h4 className="text-3xl mb-2 text-2xl font-bold">{section.name}</h4>
 
       <div
         className="wysiwyg"
@@ -94,18 +115,26 @@ const Summary = () => {
   );
 };
 
+
+
 type RatingProps = { level: number };
 
-const Rating = ({ level }: RatingProps) => (
-  <div className="flex items-center gap-x-1.5">
-    {Array.from({ length: 5 }).map((_, index) => (
-      <div
-        key={index}
-        className={cn("size-2 rounded-full border border-primary", level > index && "bg-primary")}
-      />
-    ))}
-  </div>
-);
+const Rating = ({ level }: RatingProps) => {
+  // Define linear transformation function
+  const linearTransform = (value: number, oldMin: number, oldMax: number, newMin: number, newMax: number) => {
+    return ((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin;
+  };
+
+  // Calculate width based on the level
+  const width = linearTransform(level, 0, 5, 0, 128);
+
+  return (
+    <div className="relative h-1 w-[128px] group-[.sidebar]">
+      <div className="absolute inset-0 h-1 w-[128px] rounded bg-primary opacity-25" />
+      <div className="absolute inset-0 h-1 rounded bg-primary" style={{ width }} />
+    </div>
+  );
+};
 
 type LinkProps = {
   url: URL;
@@ -118,8 +147,8 @@ const Link = ({ url, icon, label, className }: LinkProps) => {
   if (!isUrl(url.href)) return null;
 
   return (
-    <div className="flex items-center gap-x-1.5">
-      {icon ?? <i className="ph ph-bold ph-link text-primary" />}
+    <div className="">
+      {icon ?? <i className="ph ph-bold ph-link text-primary group-[.summary]:text-background" />}
       <a
         href={url.href}
         target="_blank"
@@ -154,8 +183,8 @@ const Section = <T,>({
   if (!section.visible || !section.items.length) return null;
 
   return (
-    <section id={section.id} className="grid">
-      <h4 className="mb-2 border-b pb-0.5 text-sm font-bold">{section.name}</h4>
+    <section id={section.id} className="grid" style={{margin:'20px'}}>
+      <h4 className="text-3xl mb-2 text-2xl font-bold">{section.name}</h4>
 
       <div
         className="grid gap-x-6 gap-y-3"
@@ -200,44 +229,39 @@ const Profiles = () => {
   return (
     <Section<Profile> section={section}>
       {(item) => (
-        <div>
-          {isUrl(item.url.href) ? (
-            <Link
-              url={item.url}
-              label={item.username}
-              icon={
-                <img
-                  className="ph"
-                  width={fontSize}
-                  height={fontSize}
-                  alt={item.network}
-                  src={`https://cdn.simpleicons.org/${item.icon}`}
-                />
-              }
-            />
-          ) : (
-            <p>{item.username}</p>
-          )}
-          <p className="text-sm">{item.network}</p>
-        </div>
+         <div key={item.id} className="flex items-center gap-x-2">
+         <Link
+           url={item.url}
+           label={item.username}
+           className="text-sm"
+           icon={
+             <img
+               className="ph"
+               width={fontSize}
+               height={fontSize}
+               alt={item.network}
+               src={`https://cdn.simpleicons.org/${item.icon}`}
+             />
+           }
+         />
+       </div>
       )}
     </Section>
   );
 };
-
 const Experience = () => {
   const section = useArtboardStore((state) => state.resume.sections.experience);
 
   return (
     <Section<Experience> section={section} urlKey="url" summaryKey="summary">
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.company}</div>
             <div>{item.position}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
             <div>{item.location}</div>
           </div>
@@ -253,14 +277,14 @@ const Education = () => {
   return (
     <Section<Education> section={section} urlKey="url" summaryKey="summary">
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.institution}</div>
             <div>{item.area}</div>
             <div>{item.score}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
             <div>{item.studyType}</div>
           </div>
@@ -276,13 +300,13 @@ const Awards = () => {
   return (
     <Section<Award> section={section} urlKey="url" summaryKey="summary">
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.title}</div>
             <div>{item.awarder}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
           </div>
         </div>
@@ -297,13 +321,13 @@ const Certifications = () => {
   return (
     <Section<Certification> section={section} urlKey="url" summaryKey="summary">
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.name}</div>
             <div>{item.issuer}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
           </div>
         </div>
@@ -327,11 +351,12 @@ const Skills = () => {
   );
 };
 
+
 const Interests = () => {
   const section = useArtboardStore((state) => state.resume.sections.interests);
 
   return (
-    <Section<Interest> section={section} keywordsKey="keywords" className="space-y-0.5">
+    <Section<Interest> section={section} className="space-y-1" keywordsKey="keywords">
       {(item) => <div className="font-bold">{item.name}</div>}
     </Section>
   );
@@ -341,24 +366,25 @@ const Strength = () => {
   const section = useArtboardStore((state) => state.resume.sections.strengths);
 
   return (
-    <Section<Strengths> section={section} keywordsKey="keywords" className="space-y-0.5">
+    <Section<Strengths> section={section} className="space-y-1" keywordsKey="keywords">
       {(item) => <div className="font-bold">{item.name}</div>}
     </Section>
   );
 };
+
 const Publications = () => {
   const section = useArtboardStore((state) => state.resume.sections.publications);
 
   return (
     <Section<Publication> section={section} urlKey="url" summaryKey="summary">
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.name}</div>
             <div>{item.publisher}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
           </div>
         </div>
@@ -373,13 +399,13 @@ const Volunteer = () => {
   return (
     <Section<Volunteer> section={section} urlKey="url" summaryKey="summary">
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.organization}</div>
             <div>{item.position}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
             <div>{item.location}</div>
           </div>
@@ -395,7 +421,7 @@ const Languages = () => {
   return (
     <Section<Language> section={section} levelKey="level">
       {(item) => (
-        <div className="space-y-0.5">
+        <div>
           <div className="font-bold">{item.name}</div>
           <div>{item.description}</div>
         </div>
@@ -410,13 +436,13 @@ const Projects = () => {
   return (
     <Section<Project> section={section} urlKey="url" summaryKey="summary" keywordsKey="keywords">
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.name}</div>
             <div>{item.description}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
           </div>
         </div>
@@ -451,13 +477,13 @@ const Custom = ({ id }: { id: string }) => {
       keywordsKey="keywords"
     >
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.name}</div>
             <div>{item.description}</div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right group-[.sidebar]:text-left">
             <div className="font-bold">{item.date}</div>
             <div>{item.location}</div>
           </div>
@@ -504,20 +530,26 @@ const mapSectionToComponent = (section: SectionKey) => {
   }
 };
 
-export const Rhyhorn = ({ columns, isFirstPage = false }: TemplateProps) => {
+export const Elegant = ({ columns, isFirstPage = false }: TemplateProps) => {
   const [main, sidebar] = columns;
 
   return (
-    <div className="p-custom space-y-4">
-      {isFirstPage && <Header />}
+    <div className="p-custom grid grid-cols-3 space-x-6">
+      <div className="sidebar m8 group space-y-4 bg-black text-white">
+        {isFirstPage && <Picture className="w-full !max-w-none" />}
 
-      {main.map((section) => (
-        <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
-      ))}
+        {sidebar.map((section) => (
+          <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
+        ))}
+      </div>
 
-      {sidebar.map((section) => (
-        <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
-      ))}
+      <div className="main group col-span-2 space-y-4">
+        {isFirstPage && <Header />}
+
+        {main.map((section) => (
+          <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
+        ))}
+      </div>
     </div>
   );
 };

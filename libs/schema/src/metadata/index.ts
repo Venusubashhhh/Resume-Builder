@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const defaultLayout = [
   [
-    ["profiles", "summary", "experience", "education", "projects", "volunteer", "references"],
-    ["skills", "interests", "certifications", "awards", "publications", "languages"],
+    ["profiles", "summary", "experience", "education", "projects", "certifications", "awards", "publications"],
+    ["skills", "interests","strengths",  "languages","references"],
   ],
 ];
 

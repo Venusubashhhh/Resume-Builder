@@ -139,6 +139,13 @@
       "id": "interests",
       "items": []
     },
+    "strengths": {
+      "name": "Strengths",
+      "columns": 1,
+      "visible": true,
+      "id": "strengths",
+      "items": []
+    },
     "languages": {
       "name": "Languages",
       "columns": 1,
@@ -283,7 +290,7 @@
           "skills",
           "references"
         ],
-        ["profiles", "interests", "languages", "awards", "volunteer", "publications"]
+        ["profiles", "interests","strengths", "languages", "awards", "volunteer", "publications"]
       ]
     ],
     "css": {

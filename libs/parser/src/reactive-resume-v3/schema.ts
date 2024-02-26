@@ -121,6 +121,14 @@ const interestSchema = z
     keywords: z.array(z.string().nullable()).optional(),
   })
   .nullable();
+  const strengthsSchema = z
+  .object({
+    id: z.string().optional(),
+    name: z.string().optional(),
+    keywords: z.array(z.string().nullable()).optional(),
+  })
+  .nullable();
+
 
 const languageSchema = z
   .object({
@@ -212,6 +220,7 @@ export const reactiveResumeV3Schema = z.object({
     projects: sectionSchema.extend({ items: z.array(projectSchema) }),
     education: sectionSchema.extend({ items: z.array(educationSchema) }),
     interests: sectionSchema.extend({ items: z.array(interestSchema) }),
+    strengths: sectionSchema.extend({ items: z.array(strengthsSchema) }),
     languages: sectionSchema.extend({ items: z.array(languageSchema) }),
     volunteer: sectionSchema.extend({ items: z.array(volunteerSchema) }),
     references: sectionSchema.extend({ items: z.array(referenceSchema) }),

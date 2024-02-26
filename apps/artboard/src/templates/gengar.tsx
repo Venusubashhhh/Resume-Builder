@@ -6,6 +6,7 @@ import {
   Education,
   Experience,
   Interest,
+  Strengths,
   Language,
   Profile,
   Project,
@@ -333,6 +334,16 @@ const Interests = () => {
   );
 };
 
+const Strength = () => {
+  const section = useArtboardStore((state) => state.resume.sections.strengths);
+
+  return (
+    <Section<Strengths> section={section} className="space-y-1" keywordsKey="keywords">
+      {(item) => <div className="font-bold">{item.name}</div>}
+    </Section>
+  );
+};
+
 const Publications = () => {
   const section = useArtboardStore((state) => state.resume.sections.publications);
 
@@ -470,6 +481,8 @@ const mapSectionToComponent = (section: SectionKey) => {
       return <Skills />;
     case "interests":
       return <Interests />;
+      case "strengths":
+        return <Strength />;
     case "publications":
       return <Publications />;
     case "volunteer":

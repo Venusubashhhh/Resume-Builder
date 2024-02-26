@@ -2,6 +2,8 @@ export const templatesList = [
   "azurill",
   "bronzor",
   "chikorita",
+  "elegant",
+  "minimalist",
   "ditto",
   "gengar",
   "glalie",

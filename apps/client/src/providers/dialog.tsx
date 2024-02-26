@@ -4,6 +4,7 @@ import { CustomSectionDialog } from "../pages/builder/sidebars/left/dialogs/cust
 import { EducationDialog } from "../pages/builder/sidebars/left/dialogs/education";
 import { ExperienceDialog } from "../pages/builder/sidebars/left/dialogs/experience";
 import { InterestsDialog } from "../pages/builder/sidebars/left/dialogs/interests";
+import { StrengthsDialog } from "../pages/builder/sidebars/left/dialogs/strengths";
 import { LanguagesDialog } from "../pages/builder/sidebars/left/dialogs/languages";
 import { ProfilesDialog } from "../pages/builder/sidebars/left/dialogs/profiles";
 import { ProjectsDialog } from "../pages/builder/sidebars/left/dialogs/projects";
@@ -45,6 +46,7 @@ export const DialogProvider = ({ children }: Props) => {
             <LanguagesDialog />
             <ProjectsDialog />
             <PublicationsDialog />
+            <StrengthsDialog/>
             <VolunteerDialog />
             <SkillsDialog />
             <ReferencesDialog />

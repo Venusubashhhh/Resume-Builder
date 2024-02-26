@@ -5,6 +5,7 @@ import {
   defaultEducation,
   defaultExperience,
   defaultInterest,
+  defaultStrengths,
   defaultLanguage,
   defaultProfile,
   defaultPublication,
@@ -207,6 +208,16 @@ export class JsonResumeParser implements Parser<Json, JsonResume> {
       }
     }
 
+    if (data.strengths) {
+      for (const strength of data.strengths) {
+        result.sections.strengths.items.push({
+          ...defaultStrengths,
+          id: createId(),
+          name: strength.name ?? "",
+          keywords: strength.keywords ?? [],
+        });
+      }
+    }
     // References
     if (data.references) {
       for (const reference of data.references) {

@@ -144,6 +144,13 @@ export const sampleResume: ResumeData = {
       id: "interests",
       items: [],
     },
+    strengths: {
+      name: "Strengths",
+      columns: 1,
+      visible: true,
+      id: "strengths",
+      items: [],
+    },
     languages: {
       name: "Languages",
       columns: 1,
@@ -281,16 +288,17 @@ export const sampleResume: ResumeData = {
     template: "glalie",
     layout: [
       [
-        ["summary", "experience", "education", "projects", "references"],
+        ["summary", "experience", "education", "projects", "references",   "certifications",   "publications",],
         [
           "profiles",
           "skills",
-          "certifications",
+        
           "interests",
+          "strengths",
           "languages",
           "awards",
           "volunteer",
-          "publications",
+      
         ],
       ],
     ],

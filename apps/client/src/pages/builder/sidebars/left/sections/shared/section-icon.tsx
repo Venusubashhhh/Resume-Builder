@@ -40,6 +40,8 @@ export const getSectionIcon = (id: SectionKey, props: IconProps = {}) => {
       return <Certificate size={18} {...props} />;
     case "interests":
       return <GameController size={18} {...props} />;
+    case "strengths":
+      return <CompassTool size={18} {...props} />;
     case "languages":
       return <Translate size={18} {...props} />;
     case "volunteer":

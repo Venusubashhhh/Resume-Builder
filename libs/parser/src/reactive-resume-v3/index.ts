@@ -5,6 +5,7 @@ import {
   defaultEducation,
   defaultExperience,
   defaultInterest,
+  defaultStrengths,
   defaultLanguage,
   defaultProfile,
   defaultProject,
@@ -185,6 +186,21 @@ export class ReactiveResumeV3Parser implements Parser<Json, ReactiveResumeV3> {
           name: interest.name ?? "",
           keywords: Array.isArray(interest.keywords)
             ? (interest.keywords.filter(Boolean) as string[])
+            : [],
+        });
+      }
+    }
+    
+    if (data.sections.strengths.items) {
+      for (const strength of data.sections.strengths.items) {
+        if (!strength) continue;
+
+        result.sections.strengths.items.push({
+          ...defaultStrengths,
+          id: createId(),
+          name: strength.name ?? "",
+          keywords: Array.isArray(strength.keywords)
+            ? (strength.keywords.filter(Boolean) as string[])
             : [],
         });
       }

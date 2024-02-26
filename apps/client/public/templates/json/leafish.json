@@ -139,6 +139,13 @@
       "id": "interests",
       "items": []
     },
+    "strengths": {
+      "name": "Strengths",
+      "columns": 1,
+      "visible": true,
+      "id": "strengths",
+      "items": []
+    },
     "languages": {
       "name": "Languages",
       "columns": 1,
@@ -280,6 +287,7 @@
           "skills",
           "certifications",
           "interests",
+          "strengths",
           "languages",
           "projects",
           "awards",

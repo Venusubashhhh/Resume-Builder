@@ -8,6 +8,7 @@ import { customSectionSchema } from "./custom-section";
 import { educationSchema } from "./education";
 import { experienceSchema } from "./experience";
 import { interestSchema } from "./interest";
+import { strengthsSchema } from "./strengths";
 import { languageSchema } from "./language";
 import { profileSchema } from "./profile";
 import { projectSchema } from "./project";
@@ -15,6 +16,7 @@ import { publicationSchema } from "./publication";
 import { referenceSchema } from "./reference";
 import { skillSchema } from "./skill";
 import { volunteerSchema } from "./volunteer";
+
 
 // Schema
 export const sectionSchema = z.object({
@@ -57,6 +59,10 @@ export const sectionsSchema = z.object({
   interests: sectionSchema.extend({
     id: z.literal("interests"),
     items: z.array(interestSchema),
+  }),
+  strengths: sectionSchema.extend({
+    id: z.literal("strengths"),
+    items: z.array(strengthsSchema),
   }),
   languages: sectionSchema.extend({
     id: z.literal("languages"),
@@ -115,6 +121,7 @@ export const defaultSections: Sections = {
   publications: { ...defaultSection, id: "publications", name: "Publications", items: [] },
   references: { ...defaultSection, id: "references", name: "References", items: [] },
   skills: { ...defaultSection, id: "skills", name: "Skills", items: [] },
+  strengths:{...defaultSection,id:"strengths", name: "Strengths", items: []},
   custom: {},
 };
 
@@ -131,3 +138,4 @@ export * from "./publication";
 export * from "./reference";
 export * from "./skill";
 export * from "./volunteer";
+export * from "./strengths";
