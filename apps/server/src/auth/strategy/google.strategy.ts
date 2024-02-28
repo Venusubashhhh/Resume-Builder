@@ -31,12 +31,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 
     let user: User | null = null;
 
-    if (!email) throw new BadRequestException();
+    // if (!email) throw new BadRequestException();
 
     try {
       const user = await this.userService.findOneByIdentifier(email);
 
-      if (!user) throw new UnauthorizedException();
+      // if (!user) throw new UnauthorizedException();
 
       done(null, user);
     } catch (error) {

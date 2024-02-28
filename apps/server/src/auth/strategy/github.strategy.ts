@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable} from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { User } from "@prisma/client";
 import { processUsername } from "@reactive-resume/utils";
@@ -31,12 +31,12 @@ export class GitHubStrategy extends PassportStrategy(Strategy, "github") {
 
     let user: User | null = null;
 
-    if (!email) throw new BadRequestException();
+    // if (!email) throw new BadRequestException();
 
     try {
       const user = await this.userService.findOneByIdentifier(email);
 
-      if (!user) throw new UnauthorizedException();
+      // if (!user) throw new UnauthorizedException();
 
       done(null, user);
     } catch (error) {
