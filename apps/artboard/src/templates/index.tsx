@@ -4,7 +4,7 @@ import { Azurill } from "./azurill";
 import { Bronzor } from "./bronzor";
 import { Chikorita } from "./chikorita";
 import { Elegant } from "./elegant";
-import { Minimalist } from "./minimalist";
+import { Classic } from "./classic";
 import { Ditto } from "./ditto";
 import { Gengar } from "./gengar";
 import { Glalie } from "./glalie";
@@ -25,8 +25,8 @@ export const getTemplate = (template: Template) => {
       return Chikorita;
     case "elegant":
       return Elegant;
-      case "minimalist":
-        return Minimalist;
+      case "classic":
+        return Classic;
     case "ditto":
       return Ditto;
     case "gengar":
@@ -45,6 +45,7 @@ export const getTemplate = (template: Template) => {
       return Pikachu;
     case "rhyhorn":
       return Rhyhorn;
+
     default:
       return Onyx;
   }

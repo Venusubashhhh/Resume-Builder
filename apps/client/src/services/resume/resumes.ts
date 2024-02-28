@@ -7,6 +7,7 @@ import { axios } from "@/client/libs/axios";
 
 export const fetchResumes = async () => {
   const response = await axios.get<ResumeDto[], AxiosResponse<ResumeDto[]>>("/resume");
+  console.log(response);
 
   return response.data;
 };

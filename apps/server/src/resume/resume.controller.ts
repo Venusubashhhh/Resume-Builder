@@ -78,6 +78,7 @@ export class ResumeController {
   @Get()
   @UseGuards(TwoFactorGuard)
   findAll(@User() user: UserEntity) {
+    console.log("FIRED",true);
     return this.resumeService.findAll(user.id);
   }
 

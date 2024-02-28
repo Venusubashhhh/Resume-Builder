@@ -1,7 +1,6 @@
 import { t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Helmet } from "react-helmet-async";
-
 import { ContributorsSection } from "./sections/contributors";
 import { FAQSection } from "./sections/faq";
 import { FeaturesSection } from "./sections/features";
@@ -11,7 +10,6 @@ import { StatisticsSection } from "./sections/statistics";
 import { SupportSection } from "./sections/support";
 import { TemplatesSection } from "./sections/templates";
 import { TestimonialsSection } from "./sections/testimonials";
-
 export const HomePage = () => {
   const { i18n } = useLingui();
 
