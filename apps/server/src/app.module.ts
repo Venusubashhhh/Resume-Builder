@@ -5,7 +5,7 @@ import { RavenInterceptor, RavenModule } from "nest-raven";
 import { ZodValidationPipe } from "nestjs-zod";
 import { join } from "path";
 
-import { AuthModule } from "./auth/auth.module";
+
 import { CacheModule } from "./cache/cache.module";
 import { ConfigModule } from "./config/config.module";
 import { ContributorsModule } from "./contributors/contributors.module";
@@ -29,9 +29,6 @@ import { UtilsModule } from "./utils/utils.module";
     CacheModule,
     UtilsModule,
     HealthModule,
-
-    // Feature Modules
-    AuthModule.register(),
     UserModule,
     ResumeModule,
     StorageModule,

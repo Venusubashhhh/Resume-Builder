@@ -2,44 +2,35 @@ import { sortByDate } from "@reactive-resume/utils";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { useResumes } from "@/client/services/resume";
-
+import { useMyStore } from "@/client/stores/resumelist";
 import { BaseCard } from "./_components/base-card";
 import { CreateResumeCard } from "./_components/create-card";
 import { ImportResumeCard } from "./_components/import-card";
 import { ResumeCard } from "./_components/resume-card";
+import { useEffect } from "react";
 
 export const GridView = () => {
-  const { resumes, loading } = useResumes();
 
+const{items,adduser}=useMyStore();
+console.log(items);
   return (
     <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
         <CreateResumeCard />
       </motion.div>
 
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.1 } }}
       >
         <ImportResumeCard />
-      </motion.div>
+      </motion.div> */}
 
-      {loading &&
-        [...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="duration-300 animate-in fade-in"
-            style={{ animationFillMode: "backwards", animationDelay: `${i * 300}ms` }}
-          >
-            <BaseCard />
-          </div>
-        ))}
+     
 
-      {resumes && (
+      {items && (
         <AnimatePresence>
-          {resumes
-            .sort((a, b) => sortByDate(a, b, "updatedAt"))
-            .map((resume, index) => (
+          {items.map((resume:any, index:any) => (
               <motion.div
                 layout
                 key={resume.id}

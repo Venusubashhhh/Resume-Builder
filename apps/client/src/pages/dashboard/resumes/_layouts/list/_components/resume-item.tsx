@@ -9,6 +9,7 @@ import {
   TrashSimple,
 } from "@phosphor-icons/react";
 import { ResumeDto } from "@reactive-resume/dto";
+import { deleteItem } from "@/client/stores/resumelist";
 import {
   Button,
   ContextMenu,
@@ -27,7 +28,7 @@ import {
 import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import { findResumeById } from "@/client/services/resume";
 import { useResumePreview } from "@/client/services/resume/preview";
 import { useDialog } from "@/client/stores/dialog";
 
@@ -48,6 +49,7 @@ export const ResumeListItem = ({ resume }: Props) => {
 
   const onOpen = () => {
     navigate(`/builder/${resume.id}`);
+    findResumeById({ id: resume.id });
   };
 
   const onUpdate = () => {
@@ -63,7 +65,7 @@ export const ResumeListItem = ({ resume }: Props) => {
   };
 
   const onDelete = () => {
-    open("delete", { id: "resume", item: resume });
+    deleteItem(resume.id);
   };
 
   const dropdownMenu = (
@@ -74,55 +76,6 @@ export const ResumeListItem = ({ resume }: Props) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem
-          onClick={(event) => {
-            event.stopPropagation();
-            onOpen();
-          }}
-        >
-          <FolderOpen size={14} className="mr-2" />
-          {t`Open`}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={(event) => {
-            event.stopPropagation();
-            onUpdate();
-          }}
-        >
-          <PencilSimple size={14} className="mr-2" />
-          {t`Rename`}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={(event) => {
-            event.stopPropagation();
-            onDuplicate();
-          }}
-        >
-          <CopySimple size={14} className="mr-2" />
-          {t`Duplicate`}
-        </DropdownMenuItem>
-        {resume.locked ? (
-          <DropdownMenuItem
-            onClick={(event) => {
-              event.stopPropagation();
-              onLockChange();
-            }}
-          >
-            <LockOpen size={14} className="mr-2" />
-            {t`Unlock`}
-          </DropdownMenuItem>
-        ) : (
-          <DropdownMenuItem
-            onClick={(event) => {
-              event.stopPropagation();
-              onLockChange();
-            }}
-          >
-            <Lock size={14} className="mr-2" />
-            {t`Lock`}
-          </DropdownMenuItem>
-        )}
-        <ContextMenuSeparator />
         <DropdownMenuItem
           className="text-error"
           onClick={(event) => {
@@ -169,30 +122,6 @@ export const ResumeListItem = ({ resume }: Props) => {
       </ContextMenuTrigger>
 
       <ContextMenuContent>
-        <ContextMenuItem onClick={onOpen}>
-          <FolderOpen size={14} className="mr-2" />
-          {t`Open`}
-        </ContextMenuItem>
-        <ContextMenuItem onClick={onUpdate}>
-          <PencilSimple size={14} className="mr-2" />
-          {t`Rename`}
-        </ContextMenuItem>
-        <ContextMenuItem onClick={onDuplicate}>
-          <CopySimple size={14} className="mr-2" />
-          {t`Duplicate`}
-        </ContextMenuItem>
-        {resume.locked ? (
-          <ContextMenuItem onClick={onLockChange}>
-            <LockOpen size={14} className="mr-2" />
-            {t`Unlock`}
-          </ContextMenuItem>
-        ) : (
-          <ContextMenuItem onClick={onLockChange}>
-            <Lock size={14} className="mr-2" />
-            {t`Lock`}
-          </ContextMenuItem>
-        )}
-        <ContextMenuSeparator />
         <ContextMenuItem onClick={onDelete} className="text-error">
           <TrashSimple size={14} className="mr-2" />
           {t`Delete`}

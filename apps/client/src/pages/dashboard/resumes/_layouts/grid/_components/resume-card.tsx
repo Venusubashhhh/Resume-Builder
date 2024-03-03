@@ -25,6 +25,9 @@ import { useResumePreview } from "@/client/services/resume/preview";
 import { useDialog } from "@/client/stores/dialog";
 
 import { BaseCard } from "./base-card";
+import { builderLoader } from "@/client/pages/builder/page";
+import { findResumeById } from "@/client/services/resume";
+import { deleteItem } from "@/client/stores/resumelist";
 
 type Props = {
   resume: ResumeDto;
@@ -35,12 +38,13 @@ export const ResumeCard = ({ resume }: Props) => {
   const { open } = useDialog<ResumeDto>("resume");
   const { open: lockOpen } = useDialog<ResumeDto>("lock");
 
-  const { url, loading } = useResumePreview(resume.id);
+  // const { url, loading } = useResumePreview(resume.id);
 
   const lastUpdated = dayjs().to(resume.updatedAt);
 
   const onOpen = () => {
     navigate(`/builder/${resume.id}`);
+    findResumeById({ id: resume.id });
   };
 
   const onUpdate = () => {
@@ -56,7 +60,7 @@ export const ResumeCard = ({ resume }: Props) => {
   };
 
   const onDelete = () => {
-    open("delete", { id: "resume", item: resume });
+  deleteItem(resume.id);
   };
 
   return (
@@ -64,7 +68,7 @@ export const ResumeCard = ({ resume }: Props) => {
       <ContextMenuTrigger>
         <BaseCard onClick={onOpen} className="space-y-0">
           <AnimatePresence presenceAffectsLayout>
-            {loading && (
+            {/* {loading && (
               <motion.div
                 layout
                 initial={{ opacity: 0 }}
@@ -78,9 +82,9 @@ export const ResumeCard = ({ resume }: Props) => {
                   className="animate-spin self-center justify-self-center"
                 />
               </motion.div>
-            )}
+            )} */}
 
-            {!loading && url && (
+            {/* {!loading && url && (
               <motion.img
                 layout
                 initial={{ opacity: 0 }}
@@ -90,7 +94,7 @@ export const ResumeCard = ({ resume }: Props) => {
                 className="size-full object-cover"
                 src={`${url}?cache=${new Date().getTime()}`}
               />
-            )}
+            )} */}
           </AnimatePresence>
 
           <AnimatePresence>
@@ -119,30 +123,7 @@ export const ResumeCard = ({ resume }: Props) => {
       </ContextMenuTrigger>
 
       <ContextMenuContent>
-        <ContextMenuItem onClick={onOpen}>
-          <FolderOpen size={14} className="mr-2" />
-          {t`Open`}
-        </ContextMenuItem>
-        <ContextMenuItem onClick={onUpdate}>
-          <PencilSimple size={14} className="mr-2" />
-          {t`Rename`}
-        </ContextMenuItem>
-        <ContextMenuItem onClick={onDuplicate}>
-          <CopySimple size={14} className="mr-2" />
-          {t`Duplicate`}
-        </ContextMenuItem>
-        {resume.locked ? (
-          <ContextMenuItem onClick={onLockChange}>
-            <LockOpen size={14} className="mr-2" />
-            {t`Unlock`}
-          </ContextMenuItem>
-        ) : (
-          <ContextMenuItem onClick={onLockChange}>
-            <Lock size={14} className="mr-2" />
-            {t`Lock`}
-          </ContextMenuItem>
-        )}
-        <ContextMenuSeparator />
+    
         <ContextMenuItem onClick={onDelete} className="text-error">
           <TrashSimple size={14} className="mr-2" />
           {t`Delete`}

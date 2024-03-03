@@ -75,6 +75,10 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
     setOpen?.(false);
   });
 
+  useKeyboardShortcut(["shift", "s"], () => {
+    navigate("/dashboard/settings");
+    setOpen?.(false);
+  });
 
   const sidebarItems: SidebarItem[] = [
     {
@@ -82,6 +86,12 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
       name: t`Resumes`,
       shortcut: "⇧R",
       icon: <ReadCvLogo />,
+    },
+    {
+      path: "/dashboard/settings",
+      name: t`Open AI Settings`,
+      shortcut: "⇧S",
+      icon: <FadersHorizontal />,
     },
   ];
 

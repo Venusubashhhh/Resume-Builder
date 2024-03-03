@@ -1,14 +1,25 @@
 import { ResumeDto } from "@reactive-resume/dto";
 import { useQuery } from "@tanstack/react-query";
-
+import { useMyStore } from "@/client/stores/resumelist";
 import { RESUME_KEY } from "@/client/constants/query-keys";
 import { axios } from "@/client/libs/axios";
 import { useResumeStore } from "@/client/stores/resume";
 
 export const findResumeById = async (data: { id: string }) => {
-  const response = await axios.get<ResumeDto>(`/resume/${data.id}`);
+  console.log("fired");
+  const items = useMyStore.getState().items;
+  let resume: any = null;
 
-  return response.data;
+  items.forEach((val: any) => {
+    console.log(val.id === data, val.id, data);
+    if (val.id === data.id) {
+      resume = val;
+    }
+  });
+
+
+  useResumeStore.setState({ resume });
+  useResumeStore.temporal.getState().clear();
 };
 
 export const findResumeByUsernameSlug = async (data: { username: string; slug: string }) => {
@@ -27,8 +38,6 @@ export const useResume = (id: string) => {
     queryFn: () => findResumeById({ id }),
   });
 
-  useResumeStore.setState({ resume });
-  useResumeStore.temporal.getState().clear();
 
   return { resume, loading, error };
 };

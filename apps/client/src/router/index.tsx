@@ -7,7 +7,7 @@ import { BuilderPage } from "../pages/builder/page";
 import { builderLoader } from "../pages/builder/page";
 import { DashboardLayout } from "../pages/dashboard/layout";
 import { ResumesPage } from "../pages/dashboard/resumes/page";
-
+import { SettingsPage } from "../pages/dashboard/settings/page";
 
 import { publicLoader, PublicResumePage } from "../pages/public/page";
 import { Providers } from "../providers";
@@ -22,9 +22,9 @@ export const routes = createRoutesFromElements(
 
     <Route path="dashboard">
    
-        <Route element={<DashboardLayout />}>
+    <Route element={<DashboardLayout />}>
           <Route path="resumes" element={<ResumesPage />} />
-      
+          <Route path="settings" element={<SettingsPage />} />
 
           <Route index element={<Navigate to="/dashboard/resumes" replace />} />
         </Route>

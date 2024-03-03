@@ -33,11 +33,13 @@ import {
   Input,
   Tooltip,
 } from "@reactive-resume/ui";
+import dayjs from 'dayjs';
+import { v4 as uuidv4 } from 'uuid';
 import { cn, generateRandomName, kebabCase } from "@reactive-resume/utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { useMyStore } from "@/client/stores/resumelist";
 import { useCreateResume, useDeleteResume, useUpdateResume } from "@/client/services/resume";
 import { useImportResume } from "@/client/services/resume/import";
 import { useDialog } from "@/client/stores/dialog";
@@ -59,13 +61,16 @@ export const ResumeDialog = () => {
   const { deleteResume, loading: deleteLoading } = useDeleteResume();
   const { importResume: duplicateResume, loading: duplicateLoading } = useImportResume();
 
-  const loading = createLoading || updateLoading || deleteLoading || duplicateLoading;
+  // const loading = createLoading || updateLoading || deleteLoading || duplicateLoading;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: "", slug: "" },
   });
-
+  const { items, addItem } = useMyStore();
+  useEffect(()=>{
+    console.log(items);
+  },[items])
   useEffect(() => {
     if (isOpen) onReset();
   }, [isOpen, payload]);
@@ -76,8 +81,232 @@ export const ResumeDialog = () => {
   }, [form.watch("title")]);
 
   const onSubmit = async (values: FormValues) => {
+    const randomId = uuidv4();
+
+// Get the current date and time
+const currentDateTime = dayjs();
+
+// Format the date and time in ISO 8601 format
+const formattedDateTime = currentDateTime.toISOString();
+
     if (isCreate) {
-      await createResume({ slug: values.slug, title: values.title, visibility: "public" });
+      await addItem({ slug: values.slug, title: values.title, visibility: "public",locked:false,userId:randomId,id:randomId,createdAt: formattedDateTime,
+      updatedAt: formattedDateTime,data:{
+        "name": "kannan",
+        "headline": "working in codingmart",
+        "email": "venusubash018@gmail.com",
+        "phone": "9876543210",
+        "location": "thudiyalur",
+        "url": {
+            "label": "",
+            "href": "https://kannan.com"
+        },
+        "customFields": [],
+        "picture": {
+            "url": "http://localhost:9000/default/clsx0bcbo0000u9nn6m63rmfc/pictures/clsx0bcbo0000u9nn6m63rmfc.jpg",
+            "size": 64,
+            "aspectRatio": 1,
+            "borderRadius": 0,
+            "effects": {
+                "hidden": false,
+                "border": false,
+                "grayscale": false
+            }
+        }
+    },
+    "sections": {
+        "summary": {
+            "name": "Summary",
+            "columns": 1,
+            "visible": true,
+            "id": "summary",
+            "content": ""
+        },
+        "awards": {
+            "name": "Awards",
+            "columns": 1,
+            "visible": true,
+            "id": "awards",
+            "items": []
+        },
+        "certifications": {
+            "name": "Certifications",
+            "columns": 1,
+            "visible": true,
+            "id": "certifications",
+            "items": []
+        },
+        "education": {
+            "name": "Education",
+            "columns": 1,
+            "visible": true,
+            "id": "education",
+            "items": [
+                {
+                    "id": "w57bjanifggmfsozw5om3nul",
+                    "visible": true,
+                    "institution": "ngp",
+                    "studyType": "be",
+                    "area": "cse",
+                    "score": "8.3",
+                    "date": "mARCH-2023",
+                    "summary": "",
+                    "url": {
+                        "label": "",
+                        "href": ""
+                    }
+                }
+            ]
+        },
+        "experience": {
+            "name": "Experience",
+            "columns": 1,
+            "visible": true,
+            "id": "experience",
+            "items": []
+        },
+        "volunteer": {
+            "name": "Volunteering",
+            "columns": 1,
+            "visible": true,
+            "id": "volunteer",
+            "items": []
+        },
+        "interests": {
+            "name": "Interests",
+            "columns": 1,
+            "visible": true,
+            "id": "interests",
+            "items": []
+        },
+        "languages": {
+            "name": "Languages",
+            "columns": 1,
+            "visible": true,
+            "id": "languages",
+            "items": []
+        },
+        "profiles": {
+            "name": "Profiles",
+            "columns": 1,
+            "visible": true,
+            "id": "profiles",
+            "items": []
+        },
+        "projects": {
+            "name": "Projects",
+            "columns": 1,
+            "visible": true,
+            "id": "projects",
+            "items": []
+        },
+        "publications": {
+            "name": "Publications",
+            "columns": 1,
+            "visible": true,
+            "id": "publications",
+            "items": []
+        },
+        "references": {
+            "name": "References",
+            "columns": 1,
+            "visible": true,
+            "id": "references",
+            "items": []
+        },
+        "skills": {
+            "name": "Skills",
+            "columns": 1,
+            "visible": true,
+            "id": "skills",
+            "items": [
+                {
+                    "id": "eftybhzdugbxiuxbo5a65mtx",
+                    "visible": true,
+                    "name": "react",
+                    "description": "good",
+                    "level": 1,
+                    "keywords": []
+                }
+            ]
+        },
+        "custom": {
+            "qmvrt3bog8rtxpg2anv35dje": {
+                "name": "Custom Section",
+                "columns": 1,
+                "visible": true,
+                "id": "qmvrt3bog8rtxpg2anv35dje",
+                "items": []
+            },
+            "z74xxwualnvj0lb1qfdohyus": {
+                "name": "Custom Section",
+                "columns": 1,
+                "visible": true,
+                "id": "z74xxwualnvj0lb1qfdohyus",
+                "items": []
+            }
+        }
+    },
+    "metadata": {
+        "template": "elegant",
+        "layout": [
+            [
+                [
+                    "profiles",
+                    "summary",
+                    "experience",
+                    "education",
+                    "projects",
+                    "volunteer",
+                    "references",
+                    "custom.qmvrt3bog8rtxpg2anv35dje",
+                    "custom.z74xxwualnvj0lb1qfdohyus"
+                ],
+                [
+                    "skills",
+                    "interests",
+                    "certifications",
+                    "awards",
+                    "publications",
+                    "languages"
+                ]
+            ]
+        ],
+        "css": {
+            "value": ".section {\n\toutline: 1px solid #000;\n\toutline-offset: 4px;\n}",
+            "visible": false
+        },
+        "page": {
+            "margin": 18,
+            "format": "a4",
+            "options": {
+                "breakLine": true,
+                "pageNumbers": true
+            }
+        },
+        "theme": {
+            "background": "#ffffff",
+            "text": "#000000",
+            "primary": "#475569"
+        },
+        "typography": {
+            "font": {
+                "family": "IBM Plex Serif",
+                "subset": "latin",
+                "variants": [
+                    "regular",
+                    "italic",
+                    "600"
+                ],
+                "size": 15.9
+            },
+            "lineHeight": 1.95,
+            "hideIcons": true,
+            "underlineLinks": false
+        },
+        "notes": ""
+    
+      } });
     }
 
     if (isUpdate) {
@@ -237,7 +466,7 @@ export const ResumeDialog = () => {
               <div className="flex items-center">
                 <Button
                   type="submit"
-                  disabled={loading}
+
                   className={cn(isCreate && "rounded-r-none")}
                 >
                   {isCreate && t`Create`}

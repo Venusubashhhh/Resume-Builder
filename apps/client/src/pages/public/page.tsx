@@ -12,6 +12,7 @@ import { ThemeSwitch } from "@/client/components/theme-switch";
 import { queryClient } from "@/client/libs/query-client";
 import { findResumeByUsernameSlug, usePrintResume } from "@/client/services/resume";
 
+
 export const PublicResumePage = () => {
   const frameRef = useRef<HTMLIFrameElement>(null);
 

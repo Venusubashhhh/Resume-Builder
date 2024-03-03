@@ -21,8 +21,7 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 
 import { User } from "@/server/user/decorators/user.decorator";
 
-import { OptionalGuard } from "../auth/guards/optional.guard";
-import { TwoFactorGuard } from "../auth/guards/two-factor.guard";
+
 import { UtilsService } from "../utils/utils.service";
 import { Resume } from "./decorators/resume.decorator";
 import { ResumeGuard } from "./guards/resume.guard";
@@ -46,7 +45,7 @@ export class ResumeController {
   }
 
   @Post()
-  @UseGuards(TwoFactorGuard)
+
   async create(@User() user: UserEntity, @Body() createResumeDto: CreateResumeDto) {
     try {
       return await this.resumeService.create(user.id, createResumeDto);
@@ -61,7 +60,7 @@ export class ResumeController {
   }
 
   @Post("import")
-  @UseGuards(TwoFactorGuard)
+
   async import(@User() user: UserEntity, @Body() importResumeDto: ImportResumeDto) {
     try {
       return await this.resumeService.import(user.id, importResumeDto);
@@ -76,26 +75,26 @@ export class ResumeController {
   }
 
   @Get()
-  @UseGuards(TwoFactorGuard)
+
   findAll(@User() user: UserEntity) {
     console.log("FIRED",true);
     return this.resumeService.findAll(user.id);
   }
 
   @Get(":id")
-  @UseGuards(TwoFactorGuard, ResumeGuard)
+
   findOne(@Resume() resume: ResumeDto) {
     return resume;
   }
 
   @Get(":id/statistics")
-  @UseGuards(TwoFactorGuard)
+
   findOneStatistics(@User("id") userId: string, @Param("id") id: string) {
     return this.resumeService.findOneStatistics(userId, id);
   }
 
   @Get("/public/:username/:slug")
-  @UseGuards(OptionalGuard)
+
   findOneByUsernameSlug(
     @Param("username") username: string,
     @Param("slug") slug: string,
@@ -105,7 +104,7 @@ export class ResumeController {
   }
 
   @Patch(":id")
-  @UseGuards(TwoFactorGuard)
+
   update(
     @User() user: UserEntity,
     @Param("id") id: string,
@@ -115,19 +114,18 @@ export class ResumeController {
   }
 
   @Patch(":id/lock")
-  @UseGuards(TwoFactorGuard)
+
   lock(@User() user: UserEntity, @Param("id") id: string, @Body("set") set: boolean = true) {
     return this.resumeService.lock(user.id, id, set);
   }
 
   @Delete(":id")
-  @UseGuards(TwoFactorGuard)
+
   remove(@User() user: UserEntity, @Param("id") id: string) {
     return this.resumeService.remove(user.id, id);
   }
 
   @Get("/print/:id")
-  @UseGuards(OptionalGuard, ResumeGuard)
   async printResume(@User("id") userId: string | undefined, @Resume() resume: ResumeDto) {
     try {
       const url = await this.resumeService.printResume(resume, userId);
@@ -140,7 +138,7 @@ export class ResumeController {
   }
 
   @Get("/print/:id/preview")
-  @UseGuards(TwoFactorGuard, ResumeGuard)
+
   async printPreview(@Resume() resume: ResumeDto) {
     try {
       const url = await this.resumeService.printPreview(resume);
